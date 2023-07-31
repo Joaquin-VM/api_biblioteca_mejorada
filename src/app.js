@@ -18,7 +18,13 @@ app.use(express.json());
 // Importamos el Router de Libros
 const librosRouter = require("./routes/libros");
 
-//Configuramos el middleware de autenticacion
+// Importamos el Router de Usuarios
+const usuariosRouter = require("./routes/usuarios");
+
+// Agregamos las rutas de usuarios, protegidas por el middleware de autenticación
+app.use("/api/usuarios", autenticacion, usuariosRouter);
+
+// Configuramos el middleware de autenticacion para las rutas de libros
 app.use("/api/libros", autenticacion, librosRouter);
 
 app.use(errorHandler);
@@ -26,5 +32,3 @@ app.use(errorHandler);
 app.listen(3000, () => {
   console.log("Servidor iniciado en el puerto 3000");
 });
-
-module.exports = app;
