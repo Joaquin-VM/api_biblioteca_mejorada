@@ -12,6 +12,12 @@ const autenticacion = auth({
   tokenSigningAlg: "RS256",
 });
 
+const mongoose = require("mongoose");
+mongoose.connect(process.env.MONGO_DB, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
+
 const app = express();
 app.use(express.json());
 
@@ -21,10 +27,10 @@ const librosRouter = require("./routes/libros");
 // Importamos el Router de Usuarios
 const usuariosRouter = require("./routes/usuarios");
 
-// Agregamos las rutas de usuarios, protegidas por el middleware de autenticación
-app.use("/api/usuarios", autenticacion, usuariosRouter);
+// Agregamos las rutas de usuarios
+app.use("/api/usuarios", usuariosRouter);
 
-// Configuramos el middleware de autenticacion para las rutas de libros
+// Agregamos las rutas de libros
 app.use("/api/libros", autenticacion, librosRouter);
 
 app.use(errorHandler);
